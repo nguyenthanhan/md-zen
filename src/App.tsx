@@ -9,10 +9,13 @@ import {
   copyToClipboard,
 } from "@utils/fileHelpers";
 import { parseMarkdown } from "@lib/markdown";
+import { getBaseFilename } from "@utils/common";
+import { STORAGE_KEYS, FILE_CONFIG, EDITOR_CONFIG } from "@utils/constants";
 
 const App: React.FC = () => {
   const [filename, setFilename] = useState(
-    localStorage.getItem("mdzen-filename") || "untitled.md"
+    localStorage.getItem(STORAGE_KEYS.filename) ||
+      `${FILE_CONFIG.defaultFilename}${FILE_CONFIG.extensions.markdown}`
   );
   const [content, setContent] = useState(
     loadFromLocalStorage() ||
@@ -90,12 +93,18 @@ def hello():
 **Happy writing!** 🚀`
   );
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState<number>(
+    EDITOR_CONFIG.fontSize.default
+  );
   const [autoSave, setAutoSave] = useState(true);
   const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const editorRef = useRef<HTMLTextAreaElement>(null);
+  const editorRef = useRef<{
+    insertText: (text: string) => void;
+    undo: () => void;
+    redo: () => void;
+  }>(null);
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
@@ -112,7 +121,7 @@ def hello():
   const handleFilenameChange = (newFilename: string) => {
     setFilename(newFilename);
     // Auto-save filename to localStorage
-    localStorage.setItem("mdzen-filename", newFilename);
+    localStorage.setItem(STORAGE_KEYS.filename, newFilename);
   };
 
   const handleFontSizeChange = (size: number) => {
@@ -123,15 +132,14 @@ def hello():
     setAutoSave(!autoSave);
   };
 
-  // Helper function to get base filename without extension
-  const getBaseFilename = (filename: string) => {
-    return filename.replace(/\.[^/.]+$/, "");
-  };
-
   // Download handlers
   const handleDownloadMarkdown = () => {
     const baseFilename = getBaseFilename(filename);
-    downloadFile(baseFilename + ".md", content, "text/markdown");
+    downloadFile(
+      baseFilename + FILE_CONFIG.extensions.markdown,
+      content,
+      FILE_CONFIG.mimeTypes.markdown
+    );
   };
 
   const handleDownloadHtml = () => {
@@ -154,7 +162,11 @@ def hello():
 </body>
 </html>`;
     const baseFilename = getBaseFilename(filename);
-    downloadFile(baseFilename + ".html", fullHtml, "text/html");
+    downloadFile(
+      baseFilename + FILE_CONFIG.extensions.html,
+      fullHtml,
+      FILE_CONFIG.mimeTypes.html
+    );
   };
 
   const handleCopyContent = async () => {
@@ -265,7 +277,7 @@ def hello():
 </html>`;
 
       const baseFilename = getBaseFilename(filename);
-      const pdfFilename = baseFilename + ".pdf";
+      const pdfFilename = baseFilename + FILE_CONFIG.extensions.pdf;
 
       const success = await downloadAsPDF(fullHtml, pdfFilename);
 

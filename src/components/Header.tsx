@@ -1,6 +1,9 @@
 import React from "react";
 import DownloadDropdown from "./DownloadDropdown";
 import SettingsDropdown from "./SettingsDropdown";
+import { getBaseFilename } from "@utils/common";
+import { colors } from "@utils/colors";
+import { APP_CONFIG } from "@utils/constants";
 
 interface HeaderProps {
   filename: string;
@@ -47,11 +50,6 @@ const Header: React.FC<HeaderProps> = ({
   onFontSizeChange,
   onAutoSaveToggle,
 }) => {
-  // Extract base filename without extension
-  const getBaseFilename = (filename: string) => {
-    return filename.replace(/\.[^/.]+$/, "");
-  };
-
   // Handle base filename change and add .md extension
   const handleFilenameChange = (baseFilename: string) => {
     onFilenameChange(baseFilename + ".md");
@@ -176,7 +174,7 @@ const Header: React.FC<HeaderProps> = ({
         />
 
         <a
-          href="https://github.com/nguyenthanhan/MDZen"
+          href={APP_CONFIG.github}
           target="_blank"
           rel="noopener noreferrer"
           className="w-8 h-8 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"

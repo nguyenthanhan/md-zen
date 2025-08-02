@@ -1,0 +1,69 @@
+/* CSS Custom Properties for Colors */
+:root {
+  /* Primary colors */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* Gray colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Green colors */
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+
+  /* Red colors */
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+
+  /* Common colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  /* Shadow colors (converted from RGBA) */
+  --color-shadow-light: #0000001a;    /* rgba(0, 0, 0, 0.1) */
+  --color-shadow-medium: #00000033;   /* rgba(0, 0, 0, 0.2) */
+  --color-shadow-dark: #00000080;     /* rgba(0, 0, 0, 0.5) */
+
+  /* Focus ring colors */
+  --color-focus-blue: #3b82f64d;      /* rgba(59, 130, 246, 0.3) */
+  --color-focus-ring: #3b82f680;      /* rgba(59, 130, 246, 0.5) */
+
+  /* Overlay colors */
+  --color-overlay-light: #80808033;   /* rgba(128, 128, 128, 0.2) */
+  --color-overlay-medium: #8080804d;  /* rgba(128, 128, 128, 0.3) */
+  --color-overlay-dark: #80808080;    /* rgba(128, 128, 128, 0.5) */
+}
