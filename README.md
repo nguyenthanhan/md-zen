@@ -30,6 +30,7 @@ A minimalist, real-time Markdown editor and preview application built with React
 - **Markdown Parser**: marked
 - **HTML Sanitizer**: DOMPurify
 - **PDF Generation**: html2pdf.js
+- **Code Editor**: CodeMirror 6
 - **Dark Mode**: CSS classes with Tailwind
 
 ## 🚀 Getting Started
@@ -64,6 +65,30 @@ pnpm build
 
 The built files will be in the `dist/` directory.
 
+### Development Scripts
+
+```bash
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
+
+# Run linting
+pnpm lint
+
+# Create a new release (patch, minor, or major)
+pnpm release:patch
+pnpm release:minor
+pnpm release:major
+
+# Extract changelog for a specific version
+pnpm changelog 1.0.0
+```
+
 ## 📁 Project Structure
 
 ```
@@ -83,7 +108,34 @@ src/
 ├── App.tsx             # Main application component
 ├── main.tsx            # Application entry point
 └── index.css           # Global styles with Tailwind
+
+scripts/
+├── release.sh          # Automated release script
+└── extract-changelog.js # Changelog extraction utility
+
+.github/workflows/
+├── deploy.yaml         # Production deployment workflow
+└── release.yml         # GitHub release workflow
 ```
+
+## 🚀 Deployment
+
+### Automated Deployment
+
+This project includes GitHub Actions workflows for automated deployment:
+
+- **Production Deployment**: Automatically deploys to Vercel when tags are pushed
+- **Release Management**: Creates GitHub releases with changelog extraction
+
+### Manual Deployment
+
+1. Build the project:
+
+   ```bash
+   pnpm build
+   ```
+
+2. Deploy to your preferred hosting platform (Vercel, Netlify, etc.)
 
 ## 🔒 Security
 
@@ -118,8 +170,31 @@ src/
 
 ## 🤝 Contributing
 
-Feel free to submit issues and pull requests!
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow TypeScript best practices
+- Use Tailwind CSS for styling
+- Write meaningful commit messages
+- Test your changes thoroughly
+- Update documentation as needed
 
 ## 📄 License
 
 MIT License - feel free to use this project for personal or commercial purposes.
+
+## 🔄 Release Process
+
+This project uses automated release management:
+
+1. **Version Bumping**: Use `pnpm release:patch|minor|major` to bump version
+2. **Changelog**: Updates are automatically extracted from CHANGELOG.md
+3. **GitHub Release**: Creates a new release with changelog content
+4. **Deployment**: Automatically deploys to production
+
+For more details, see the `scripts/` directory and GitHub Actions workflows.
