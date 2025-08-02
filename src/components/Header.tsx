@@ -2,7 +2,6 @@ import React from "react";
 import DownloadDropdown from "./DownloadDropdown";
 import SettingsDropdown from "./SettingsDropdown";
 import { getBaseFilename } from "@utils/common";
-import { colors } from "@utils/colors";
 import { APP_CONFIG } from "@utils/constants";
 
 interface HeaderProps {
