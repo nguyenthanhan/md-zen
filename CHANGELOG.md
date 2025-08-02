@@ -39,22 +39,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release - no known issues
 
+## [1.0.2] - 2025-08-03
+
+### Changed
+
+- Added copy to clipboard functionality
+- Added toast notifications
+- Added keyboard shortcuts and auto-completion
+- Fixed line highlighting to follow cursor during scroll
+- Removed drag & drop (moved to planned features)
+- Improved PDF generation reliability
+
+---
+
 ## [Unreleased]
 
-### Planned Features
-
-- Syntax highlighting for code blocks
-- Multiple file tabs support
-- Custom themes and styling options
-- Export to additional formats (Word, LaTeX)
-- Collaborative editing features
-- Plugin system for extensions
-
-### Technical Improvements
-
-- Performance optimizations for large documents
-- Enhanced accessibility features
-- Unit and integration test coverage
-- Progressive Web App (PWA) capabilities
+---
 
 _This changelog will be updated with each new release to document all changes, improvements, and new features._
