@@ -16,6 +16,9 @@ const Preview: React.FC<PreviewProps> = ({ content }) => {
   const scrollSyncManager = useRef(new ScrollSyncManager());
 
   React.useEffect(() => {
+    // Copy ref to avoid stale closure issues
+    const syncManager = scrollSyncManager.current;
+
     // Skip if content hasn't changed (memoization)
     if (content === lastContentRef.current) {
       return;
@@ -26,18 +29,24 @@ const Preview: React.FC<PreviewProps> = ({ content }) => {
       clearTimeout(debounceTimeoutRef.current);
     }
 
-    // Debounce markdown parsing to reduce lag
+    // Optimized debounce for ultra-responsive preview updates
     debounceTimeoutRef.current = setTimeout(() => {
       // Update last content reference
       lastContentRef.current = content;
 
-      // Use requestIdleCallback if available for better performance
+      // Use requestIdleCallback for non-blocking parsing
       if (window.requestIdleCallback) {
-        window.requestIdleCallback(() => {
+        window.requestIdleCallback(
+          () => {
+            parseMarkdown(content).then(setHtmlContent);
+          },
+          { timeout: 100 } // Fallback timeout for better responsiveness
+        );
+      } else {
+        // Use requestAnimationFrame as fallback for smooth updates
+        requestAnimationFrame(() => {
           parseMarkdown(content).then(setHtmlContent);
         });
-      } else {
-        parseMarkdown(content).then(setHtmlContent);
       }
     }, EDITOR_CONFIG.debounce.preview);
 
@@ -45,7 +54,9 @@ const Preview: React.FC<PreviewProps> = ({ content }) => {
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
       }
-      scrollSyncManager.current.cleanup();
+      if (syncManager) {
+        syncManager.cleanup();
+      }
     };
   }, [content]);
 
