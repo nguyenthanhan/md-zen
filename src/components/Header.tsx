@@ -47,16 +47,33 @@ const Header: React.FC<HeaderProps> = ({
   onFontSizeChange,
   onAutoSaveToggle,
 }) => {
+  // Extract base filename without extension
+  const getBaseFilename = (filename: string) => {
+    return filename.replace(/\.[^/.]+$/, "");
+  };
+
+  // Handle base filename change and add .md extension
+  const handleFilenameChange = (baseFilename: string) => {
+    onFilenameChange(baseFilename + ".md");
+  };
+
+  const baseFilename = getBaseFilename(filename);
   return (
     <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-600">
       <div className="flex items-center space-x-4 flex-1 min-w-0">
-        <input
-          type="text"
-          value={filename}
-          onChange={(e) => onFilenameChange(e.target.value)}
-          className="w-32 sm:w-48 md:w-64 px-3 py-1.5 text-sm font-medium text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Enter filename..."
-        />
+        {/* Filename input with fixed .md extension */}
+        <div className="relative flex items-center w-32 sm:w-48 md:w-64">
+          <input
+            type="text"
+            value={baseFilename}
+            onChange={(e) => handleFilenameChange(e.target.value)}
+            className="flex-1 px-3 py-1.5 pr-10 text-sm font-medium text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="filename"
+          />
+          <span className="absolute right-3 text-sm font-medium text-gray-500 dark:text-gray-400 pointer-events-none">
+            .md
+          </span>
+        </div>
 
         {/* Stats */}
         <div className="hidden md:flex items-center space-x-4 text-xs text-gray-600 dark:text-gray-400 flex-shrink-0">

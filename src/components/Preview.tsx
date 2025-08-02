@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { parseMarkdown } from "../lib/markdown";
+import { parseMarkdown } from "@lib/markdown";
 
 interface PreviewProps {
   content: string;
@@ -9,15 +9,80 @@ interface PreviewProps {
 const Preview: React.FC<PreviewProps> = ({ content }) => {
   const [htmlContent, setHtmlContent] = React.useState<string>("");
   const previewRef = useRef<HTMLDivElement>(null);
+  const isScrollingSyncRef = useRef(false);
+  const debounceTimeoutRef = useRef<number | null>(null);
+  const scrollSyncTimeoutRef = useRef<number | null>(null);
+  const lastContentRef = useRef<string>("");
 
   React.useEffect(() => {
-    parseMarkdown(content).then(setHtmlContent);
+    // Skip if content hasn't changed (memoization)
+    if (content === lastContentRef.current) {
+      return;
+    }
+
+    // Clear existing timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    // Debounce markdown parsing to reduce lag
+    debounceTimeoutRef.current = setTimeout(() => {
+      // Update last content reference
+      lastContentRef.current = content;
+
+      // Use requestIdleCallback if available for better performance
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => {
+          parseMarkdown(content).then(setHtmlContent);
+        });
+      } else {
+        parseMarkdown(content).then(setHtmlContent);
+      }
+    }, 100); // Reduced to 100ms for better responsiveness
+
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+      if (scrollSyncTimeoutRef.current) {
+        clearTimeout(scrollSyncTimeoutRef.current);
+      }
+    };
   }, [content]);
 
-  // Temporarily disable reverse scroll sync to prevent conflicts
-  const handleScroll = () => {
-    // Disabled to prevent scroll conflicts that cause white screen
-    // This prevents the preview from trying to control the editor scroll
+  // Handle reverse scroll synchronization (preview -> editor) with throttling
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (isScrollingSyncRef.current) return;
+
+    // Throttle scroll events to reduce lag
+    if (scrollSyncTimeoutRef.current) return;
+
+    const previewElement = event.target as HTMLDivElement;
+    const scrollTop = previewElement.scrollTop;
+    const scrollHeight =
+      previewElement.scrollHeight - previewElement.clientHeight;
+    const scrollPercentage = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+
+    // Throttle scroll sync to 30fps (33ms) for better performance
+    scrollSyncTimeoutRef.current = setTimeout(() => {
+      const editorScroller = document.querySelector(".cm-scroller");
+      if (editorScroller && !isScrollingSyncRef.current) {
+        isScrollingSyncRef.current = true;
+
+        const editorScrollHeight =
+          editorScroller.scrollHeight - editorScroller.clientHeight;
+        const targetScrollTop = scrollPercentage * editorScrollHeight;
+
+        // Use direct assignment for better performance
+        editorScroller.scrollTop = targetScrollTop;
+
+        // Reset sync flag quickly
+        setTimeout(() => {
+          isScrollingSyncRef.current = false;
+        }, 10);
+      }
+      scrollSyncTimeoutRef.current = null;
+    }, 33); // 30fps throttling for better performance
   };
 
   return (

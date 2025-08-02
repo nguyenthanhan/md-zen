@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
-import Editor from "./components/Editor";
-import Preview from "./components/Preview";
-import Header from "./components/Header";
-import { saveToLocalStorage, loadFromLocalStorage } from "./lib/markdown";
+import Editor from "@components/Editor";
+import Preview from "@components/Preview";
+import Header from "@components/Header";
+import { saveToLocalStorage, loadFromLocalStorage } from "@lib/markdown";
 import {
   downloadFile,
   downloadAsPDF,
   copyToClipboard,
-} from "./utils/fileHelpers";
-import { parseMarkdown } from "./lib/markdown";
+} from "@utils/fileHelpers";
+import { parseMarkdown } from "@lib/markdown";
 
 const App: React.FC = () => {
   const [filename, setFilename] = useState(
@@ -123,9 +123,15 @@ def hello():
     setAutoSave(!autoSave);
   };
 
+  // Helper function to get base filename without extension
+  const getBaseFilename = (filename: string) => {
+    return filename.replace(/\.[^/.]+$/, "");
+  };
+
   // Download handlers
   const handleDownloadMarkdown = () => {
-    downloadFile("mdzen-minimal-markdown-editor.md", content, "text/markdown");
+    const baseFilename = getBaseFilename(filename);
+    downloadFile(baseFilename + ".md", content, "text/markdown");
   };
 
   const handleDownloadHtml = () => {
@@ -147,7 +153,8 @@ def hello():
     ${htmlContent}
 </body>
 </html>`;
-    downloadFile("mdzen-minimal-markdown-editor.html", fullHtml, "text/html");
+    const baseFilename = getBaseFilename(filename);
+    downloadFile(baseFilename + ".html", fullHtml, "text/html");
   };
 
   const handleCopyContent = async () => {
@@ -257,15 +264,15 @@ def hello():
 </body>
 </html>`;
 
-      const success = await downloadAsPDF(
-        fullHtml,
-        "mdzen-minimal-markdown-editor.pdf"
-      );
+      const baseFilename = getBaseFilename(filename);
+      const pdfFilename = baseFilename + ".pdf";
+
+      const success = await downloadAsPDF(fullHtml, pdfFilename);
 
       if (success) {
         console.log("✅ PDF generated successfully!");
         // Show success message in console instead of alert to avoid UI disruption
-        console.log("📄 PDF saved as: mdzen-minimal-markdown-editor.pdf");
+        console.log(`📄 PDF saved as: ${pdfFilename}`);
       } else {
         console.error("❌ Failed to generate PDF");
         console.log(

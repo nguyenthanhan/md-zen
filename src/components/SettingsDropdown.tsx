@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import "./slider.css";
 
 interface SettingsDropdownProps {
   isVisible: boolean;
@@ -56,24 +57,36 @@ const SettingsDropdown: React.FC<SettingsDropdownProps> = ({
         <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
           <div className="p-4 space-y-4">
             <div className="space-y-3">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                Font Size
-              </h3>
-              <div className="flex items-center">
-                <label className="mr-2 text-sm text-gray-700 dark:text-gray-300">
-                  Size:
-                </label>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  Font Size
+                </h3>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {fontSize}px
+                </span>
+              </div>
+              <div className="space-y-2">
                 <input
-                  type="number"
-                  value={fontSize}
-                  onChange={(e) => onFontSizeChange(Number(e.target.value))}
+                  type="range"
                   min={12}
                   max={24}
-                  className="w-16 p-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  step={1}
+                  value={fontSize}
+                  onChange={(e) => onFontSizeChange(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg font-size-slider focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  style={{
+                    background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${
+                      ((fontSize - 12) / (24 - 12)) * 100
+                    }%, #d1d5db ${
+                      ((fontSize - 12) / (24 - 12)) * 100
+                    }%, #d1d5db 100%)`,
+                  }}
                 />
-                <span className="ml-1 text-sm text-gray-500 dark:text-gray-400">
-                  px
-                </span>
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                  <span>12px</span>
+                  <span>18px</span>
+                  <span>24px</span>
+                </div>
               </div>
             </div>
 
@@ -100,4 +113,4 @@ const SettingsDropdown: React.FC<SettingsDropdownProps> = ({
   );
 };
 
-export default SettingsDropdown; 
+export default SettingsDropdown;
