@@ -17,6 +17,7 @@ const Editor = React.forwardRef<any, EditorProps>(
     const [isUndoRedo, setIsUndoRedo] = useState(false);
     const [currentLine, setCurrentLine] = useState(1);
     const [isFocused, setIsFocused] = useState(false);
+    const [scrollTop, setScrollTop] = useState(0);
 
     // Add content to history when it changes (debounced)
     useEffect(() => {
@@ -72,29 +73,29 @@ const Editor = React.forwardRef<any, EditorProps>(
       }
     };
 
-    // Handle file drop
-    const handleDrop = (e: React.DragEvent) => {
-      e.preventDefault();
-      const files = Array.from(e.dataTransfer.files);
-      const mdFile = files.find(
-        (file) => file.name.endsWith(".md") || file.type === "text/markdown"
-      );
+    // TODO: Drag and drop functionality - Planned for future implementation
+    // const handleDrop = (e: React.DragEvent) => {
+    //   e.preventDefault();
+    //   const files = Array.from(e.dataTransfer.files);
+    //   const mdFile = files.find(
+    //     (file) => file.name.endsWith(".md") || file.type === "text/markdown"
+    //   );
 
-      if (mdFile) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const fileContent = event.target?.result as string;
-          if (validateMarkdownLength(fileContent)) {
-            onContentChange(fileContent);
-          }
-        };
-        reader.readAsText(mdFile);
-      }
-    };
+    //   if (mdFile) {
+    //     const reader = new FileReader();
+    //     reader.onload = (event) => {
+    //       const fileContent = event.target?.result as string;
+    //       if (validateMarkdownLength(fileContent)) {
+    //         onContentChange(fileContent);
+    //       }
+    //     };
+    //     reader.readAsText(mdFile);
+    //   }
+    // };
 
-    const handleDragOver = (e: React.DragEvent) => {
-      e.preventDefault();
-    };
+    // const handleDragOver = (e: React.DragEvent) => {
+    //   e.preventDefault();
+    // };
 
     // Handle focus and blur events
     const handleFocus = () => {
@@ -121,9 +122,6 @@ const Editor = React.forwardRef<any, EditorProps>(
         // The line number is the count of newlines + 1
         const currentLineNumber = newlineCount + 1;
 
-        console.log(
-          `Cursor at position ${selectionStart}, newlines before: ${newlineCount}, highlighting line ${currentLineNumber}`
-        );
         setCurrentLine(currentLineNumber);
       }
     };
@@ -170,7 +168,7 @@ const Editor = React.forwardRef<any, EditorProps>(
         lines.push(
           <div
             key={i}
-            className={`text-right pr-2 select-none transition-colors duration-150 ${
+            className={`text-right pr-2 select-none ${
               isCurrentLine
                 ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 font-semibold"
                 : "text-gray-400 dark:text-gray-600"
@@ -193,6 +191,9 @@ const Editor = React.forwardRef<any, EditorProps>(
       e: React.UIEvent<HTMLTextAreaElement>
     ) => {
       const target = e.target as HTMLTextAreaElement;
+
+      // Update scroll position for highlight calculation
+      setScrollTop(target.scrollTop);
 
       // Sync line numbers scroll
       if (lineNumbersRef.current) {
@@ -234,14 +235,14 @@ const Editor = React.forwardRef<any, EditorProps>(
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               onScroll={handleScrollWithLineNumbers}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
+              // onDrop={handleDrop}
+              // onDragOver={handleDragOver}
               onKeyUp={handleCursorPosition}
               onClick={handleCursorPosition}
               onInput={handleCursorPosition}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              placeholder="Type your Markdown here or drag & drop a .md file..."
+              placeholder="Type your Markdown here..."
               className="w-full h-full p-4 font-mono resize-none border-0 outline-none bg-transparent text-gray-900 dark:text-gray-100"
               style={{
                 fontSize: `${fontSize}px`,
@@ -251,13 +252,16 @@ const Editor = React.forwardRef<any, EditorProps>(
             {/* Line highlight overlay */}
             {isFocused && (
               <div
-                className="absolute pointer-events-none transition-all duration-150 bg-green-100 dark:bg-green-900/30 rounded"
+                className="absolute pointer-events-none bg-green-100 dark:bg-green-900/30 rounded"
                 style={{
-                  top: `${(currentLine - 1) * fontSize * 1.5 + 16}px`, // 16px for padding
+                  top: `${
+                    (currentLine - 1) * fontSize * 1.5 + 16 - scrollTop
+                  }px`, // Adjust for scroll position
                   left: "16px",
                   right: "16px",
                   height: `${fontSize * 1.5}px`,
                   zIndex: 1,
+                  mixBlendMode: "multiply",
                 }}
               />
             )}
