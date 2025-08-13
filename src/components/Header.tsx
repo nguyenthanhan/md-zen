@@ -95,6 +95,20 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
+      {/* App Logo - Centered */}
+      <div className="absolute left-1/2 transform -translate-x-1/2">
+        <div className="flex items-center space-x-3 group cursor-pointer">
+          <img
+            src={isDarkMode ? "/logo-dark.svg" : "/logo.svg"}
+            alt="MDZen"
+            className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
+          />
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+            MDZen
+          </h1>
+        </div>
+      </div>
+
       {/* Action Buttons */}
       <div className="flex items-center space-x-2 flex-shrink-0">
         {/* Copy Button */}
