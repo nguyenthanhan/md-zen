@@ -53,17 +53,27 @@
   --color-black: #000000;
   --color-transparent: transparent;
 
-  /* Shadow colors (converted from RGBA) */
-  --color-shadow-light: #0000001a;    /* rgba(0, 0, 0, 0.1) */
-  --color-shadow-medium: #00000033;   /* rgba(0, 0, 0, 0.2) */
-  --color-shadow-dark: #00000080;     /* rgba(0, 0, 0, 0.5) */
+  /* Shadow colors */
+  --color-shadow-light: #0000001a;
+  --color-shadow-medium: #00000033;
+  --color-shadow-dark: #00000080;
 
   /* Focus ring colors */
-  --color-focus-blue: #3b82f64d;      /* rgba(59, 130, 246, 0.3) */
-  --color-focus-ring: #3b82f680;      /* rgba(59, 130, 246, 0.5) */
+  --color-focus-blue: #3b82f64d;
+  --color-focus-ring: #3b82f680;
 
   /* Overlay colors */
-  --color-overlay-light: #80808033;   /* rgba(128, 128, 128, 0.2) */
-  --color-overlay-medium: #8080804d;  /* rgba(128, 128, 128, 0.3) */
-  --color-overlay-dark: #80808080;    /* rgba(128, 128, 128, 0.5) */
+  --color-overlay-light: #80808033;
+  --color-overlay-medium: #8080804d;
+  --color-overlay-dark: #80808080;
+
+  /* Scroll behavior properties */
+  --scroll-sensitivity: 1.2;
+  --scroll-acceleration: 0.8;
+  --scroll-edge-threshold: 0.1;
+  --scrollbar-width: 8px;
+  --scrollbar-color: #9ca3af80;
+  --scrollbar-color-hover: #9ca3afb3;
+  --scrollbar-border-radius: 4px;
+  --scroll-transition-duration: 0.2s;
 }

@@ -4,60 +4,118 @@
 
 # MDZen - Minimal Markdown Editor
 
-A clean, real-time Markdown editor with live preview built with React 19 + TypeScript.
+A clean, fast, and responsive markdown editor built with React and CodeMirror.
 
-## ✨ Features
+## Features
 
-- **Real-time Preview**: See your Markdown rendered instantly
-- **Two-Panel Layout**: Side-by-side editor and preview with CodeMirror
-- **Theme Toggle**: Light and dark modes
-- **Export Options**: Download as MD, HTML, or PDF
-- **Auto-save**: Content saved to localStorage
-- **Copy to Clipboard**: One-click copy functionality
-- **Responsive Design**: Works on desktop and mobile
-- **Clean UI**: Modern interface with smooth animations
+- **Live Preview**: See your markdown rendered in real-time
+- **Dark/Light Theme**: Toggle between themes
+- **Font Size Control**: Adjust text size for better readability
+- **Auto-save**: Automatically saves your content to localStorage
+- **Export Options**: Download as Markdown, HTML, or PDF
+- **Responsive Design**: Works on desktop and mobile devices
+- **Enhanced Scrolling**: Improved scroll sensitivity and behavior
 
-## 🚀 Quick Start
+## Enhanced Scrolling
 
-```bash
-# Install dependencies
-pnpm install
+MDZen includes custom scroll behavior to address common scrolling issues:
 
-# Start development server
-pnpm dev
+### Scroll Sensitivity
 
-# Build for production
-pnpm build
+- **Increased sensitivity**: Scroll moves content more with less wheel movement
+- **Edge acceleration**: Reduced excessive scrolling when near top/bottom
+- **Smooth scrolling**: Consistent scroll behavior across editor and preview
+
+### Customization
+
+You can adjust scroll behavior by modifying `src/utils/scrollConfig.ts`:
+
+```typescript
+export const SCROLL_CONFIG = {
+  // Scroll sensitivity multiplier (higher = more sensitive)
+  sensitivity: 1.2,
+
+  // Scroll acceleration near edges (lower = less excessive scrolling)
+  acceleration: 0.8,
+
+  // Edge detection threshold (percentage from top/bottom)
+  edgeThreshold: 0.1,
+
+  // Performance settings
+  performance: {
+    throttleMs: 4, // ~240fps for smooth scrolling
+  },
+};
 ```
 
-Visit `http://localhost:5173` to start editing.
+### Scroll Behavior Features
 
-## 🛠️ Tech Stack
+- **Thin scrollbars**: 8px width for better content visibility
+- **Hover effects**: Scrollbar highlights on hover
+- **Touch support**: Optimized for mobile devices
+- **Performance**: 240fps scrolling with requestAnimationFrame
+- **Sync**: Editor and preview scroll in perfect sync
 
-- **React 19** + **TypeScript** + **Vite**
-- **Tailwind CSS** for styling
-- **CodeMirror 6** for editing
-- **marked** for Markdown parsing
-- **DOMPurify** for security
+## Getting Started
 
-## 📝 Usage
+### Prerequisites
 
-1. Type Markdown in the left panel
-2. See live preview on the right
-3. Use the top bar to:
-   - Edit filename
-   - Copy content
-   - Download files
-   - Toggle theme
-   - Adjust settings
+- Node.js 18+
+- pnpm (recommended) or npm
 
-## 🤝 Contributing
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/nguyenthanhan/MDZen.git
+cd MDZen
+```
+
+2. Install dependencies:
+
+```bash
+pnpm install
+```
+
+3. Start the development server:
+
+```bash
+pnpm dev
+```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+## Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview production build
+- `pnpm lint` - Run ESLint
+- `pnpm release` - Create a new release
+
+## Tech Stack
+
+- **Frontend**: React 19, TypeScript
+- **Editor**: CodeMirror 6
+- **Styling**: Tailwind CSS
+- **Build Tool**: Vite
+- **Package Manager**: pnpm
+
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 License
+## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [CodeMirror](https://codemirror.net/) for the excellent editor
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+- [React](https://react.dev/) for the amazing UI library
