@@ -1,6 +1,8 @@
-[![Release and Deploy](https://github.com/nguyenthanhan/md-zen/workflows/Release%20and%20Deploy/badge.svg)](https://github.com/nguyenthanhan/md-zen/actions/workflows/release-and-deploy.yml)
+[![Release](https://github.com/nguyenthanhan/md-zen/workflows/release/badge.svg)](https://github.com/nguyenthanhan/md-zen/actions/workflows/release.yml)
 [![Deploy on Vercel](https://img.shields.io/badge/Deploy%20on-Vercel-black)](https://vercel.com/heimers-projects/md-zen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
 
 # MDZen - Minimal Markdown Editor
 

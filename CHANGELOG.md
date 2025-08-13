@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Improved editor/preview scroll synchronization: snap to exact top/bottom and pixel rounding for faster reach to min/max
 - Resolved Node.js module type warning by adding "type": "module" to package.json
 
 ---
