@@ -31,7 +31,7 @@ export default defineConfig({
             if (id.includes("marked") || id.includes("dompurify")) {
               return "markdown";
             }
-            // PDF functionality (though it's loaded via CDN)
+            // PDF functionality (dynamically imported at runtime)
             if (id.includes("html2pdf")) {
               return "pdf";
             }
@@ -51,6 +51,9 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 1000,
+  },
+  esbuild: {
+    drop: ["console"],
   },
 });
