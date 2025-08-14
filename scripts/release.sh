@@ -175,26 +175,27 @@ git pull origin $CURRENT_BRANCH
 print_info "Updating package.json version to $NEW_VERSION..."
 npm version $NEW_VERSION --no-git-tag-version
 
+# Configure sed -i compatibility (GNU vs BSD/macOS)
+if sed --version >/dev/null 2>&1; then
+    # GNU sed
+    SED_INPLACE=(sed -i)
+else
+    # BSD/macOS sed requires an explicit (possibly empty) backup extension
+    SED_INPLACE=(sed -i '')
+fi
+
 # Update CHANGELOG.md with current date if it exists
 if [ -f "CHANGELOG.md" ]; then
     print_info "Updating CHANGELOG.md with release date..."
     TODAY=$(date +"%Y-%m-%d")
-    # Replace [Unreleased] or existing date with current date for the version
-    sed -i "s/## \[$NEW_VERSION\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/## [$NEW_VERSION] - $TODAY/" CHANGELOG.md
-    sed -i "s/## \[$NEW_VERSION\] - Unreleased/## [$NEW_VERSION] - $TODAY/" CHANGELOG.md
-    
-    # Add new [Unreleased] section if it doesn't exist
-    if ! grep -q "## \[Unreleased\]" CHANGELOG.md; then
-        # Add [Unreleased] section after the first ## heading
-        sed -i "1,/^## /{ /^## /a\\\n## [Unreleased]\n\n### Planned Features\n- Additional improvements and features\n" CHANGELOG.md
-    fi
+    "${SED_INPLACE[@]}" -e "s/## \[$NEW_VERSION\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/## [$NEW_VERSION] - $TODAY/" CHANGELOG.md
 fi
 
 # Update README.md version badge if it exists
 if [ -f "README.md" ]; then
     print_info "Updating README.md version badge to $NEW_VERSION..."
     # Update the version badge in README.md
-    sed -i "s/badge\/version-[0-9]\+\.[0-9]\+\.[0-9]\+/badge\/version-$NEW_VERSION/" README.md
+    "${SED_INPLACE[@]}" -e "s/badge\/version-[0-9]\+\.[0-9]\+\.[0-9]\+/badge\/version-$NEW_VERSION/" README.md
 fi
 
 # Stage files for commit

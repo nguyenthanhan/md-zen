@@ -6,8 +6,8 @@
  * Example: node scripts/extract-changelog.js 1.0.0
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 function extractChangelog(version) {
   try {
