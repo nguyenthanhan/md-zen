@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import Editor from "@components/Editor";
+import LazyEditor from "@components/LazyEditor";
 import Preview from "@components/Preview";
 import Header from "@components/Header";
 import { saveToLocalStorage, loadFromLocalStorage } from "@lib/markdown";
@@ -11,6 +11,7 @@ import {
 import { parseMarkdown } from "@lib/markdown";
 import { getBaseFilename } from "@utils/common";
 import { STORAGE_KEYS, FILE_CONFIG, EDITOR_CONFIG } from "@utils/constants";
+import type { EditorRef } from "@components/Editor";
 
 const App: React.FC = () => {
   const [filename, setFilename] = useState(
@@ -100,11 +101,7 @@ def hello():
   const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const editorRef = useRef<{
-    insertText: (text: string) => void;
-    undo: () => void;
-    redo: () => void;
-  }>(null);
+  const editorRef = useRef<EditorRef>(null);
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
@@ -335,7 +332,7 @@ def hello():
       <div className="flex flex-1 min-h-0">
         {/* Editor Panel */}
         <div className="w-1/2 border-r-2 border-gray-300 dark:border-gray-600 flex flex-col min-h-0">
-          <Editor
+          <LazyEditor
             ref={editorRef}
             content={content}
             onContentChange={handleContentChange}
