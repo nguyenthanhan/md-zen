@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const baseFilename = getBaseFilename(filename);
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-600">
+    <div className="relative flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-600">
       <div className="flex items-center space-x-4 flex-1 min-w-0">
         {/* Filename input with fixed .md extension */}
         <div className="relative flex items-center w-32 sm:w-48 md:w-64">
@@ -96,17 +96,21 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* App Logo - Centered */}
-      <div className="absolute left-1/2 transform -translate-x-1/2">
-        <div className="flex items-center space-x-3 group cursor-pointer">
+      <div className="absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
+        <a
+          href="/"
+          className="pointer-events-auto flex items-center space-x-3 group cursor-pointer"
+        >
           <img
             src={isDarkMode ? "/logo-dark.svg" : "/logo.svg"}
-            alt="MDZen"
+            alt=""
+            aria-hidden="true"
             className="w-10 h-10 transition-transform duration-200 group-hover:scale-110"
           />
           <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 transition-colors duration-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">
             MDZen
           </h1>
-        </div>
+        </a>
       </div>
 
       {/* Action Buttons */}

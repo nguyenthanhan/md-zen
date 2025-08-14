@@ -1,8 +1,8 @@
-[![Release](https://github.com/nguyenthanhan/md-zen/workflows/release/badge.svg)](https://github.com/nguyenthanhan/md-zen/actions/workflows/release.yml)
+[![Release](https://github.com/nguyenthanhan/md-zen/actions/workflows/release.yml/badge.svg)](https://github.com/nguyenthanhan/md-zen/actions/workflows/release.yml)
 [![Deploy on Vercel](https://img.shields.io/badge/Deploy%20on-Vercel-black)](https://vercel.com/heimers-projects/md-zen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 
 # MDZen - Minimal Markdown Editor
 
@@ -28,28 +28,6 @@ MDZen includes custom scroll behavior to address common scrolling issues:
 - **Edge acceleration**: Reduced excessive scrolling when near top/bottom
 - **Smooth scrolling**: Consistent scroll behavior across editor and preview
 
-### Customization
-
-You can adjust scroll behavior by modifying `src/utils/scrollConfig.ts`:
-
-```typescript
-export const SCROLL_CONFIG = {
-  // Scroll sensitivity multiplier (higher = more sensitive)
-  sensitivity: 1.2,
-
-  // Scroll acceleration near edges (lower = less excessive scrolling)
-  acceleration: 0.8,
-
-  // Edge detection threshold (percentage from top/bottom)
-  edgeThreshold: 0.1,
-
-  // Performance settings
-  performance: {
-    throttleMs: 4, // ~240fps for smooth scrolling
-  },
-};
-```
-
 ### Scroll Behavior Features
 
 - **Thin scrollbars**: 8px width for better content visibility
@@ -70,8 +48,8 @@ export const SCROLL_CONFIG = {
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/nguyenthanhan/MDZen.git
-cd MDZen
+git clone https://github.com/nguyenthanhan/md-zen.git
+cd md-zen
 ```
 
 2. Install dependencies:
@@ -98,7 +76,7 @@ pnpm dev
 
 ## Tech Stack
 
-- **Frontend**: React 19, TypeScript
+- **Frontend**: React ^19.1.0, TypeScript
 - **Editor**: CodeMirror 6
 - **Styling**: Tailwind CSS
 - **Build Tool**: Vite

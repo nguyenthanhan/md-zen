@@ -68,11 +68,12 @@ export class ScrollSyncManager {
 
       const previewScrollHeight =
         this.previewElement.scrollHeight - this.previewElement.clientHeight;
+      const clamped = Math.min(1, Math.max(0, scrollPercentage));
       const targetScrollTop = atTop
         ? 0
         : atBottom
         ? previewScrollHeight
-        : Math.round(scrollPercentage * previewScrollHeight);
+        : Math.round(clamped * previewScrollHeight);
 
       // Direct assignment for instant, lag-free sync
       this.previewElement.scrollTop = targetScrollTop;
@@ -120,11 +121,12 @@ export class ScrollSyncManager {
 
       const editorScrollHeight =
         this.editorElement.scrollHeight - this.editorElement.clientHeight;
+      const clamped = Math.min(1, Math.max(0, scrollPercentage));
       const targetScrollTop = atTop
         ? 0
         : atBottom
         ? editorScrollHeight
-        : Math.round(scrollPercentage * editorScrollHeight);
+        : Math.round(clamped * editorScrollHeight);
 
       // Direct assignment for instant, lag-free sync
       this.editorElement.scrollTop = targetScrollTop;
