@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t2 d2">
+  <title id="t2">MD Zen — teal badge</title>
+  <desc id="d2">Biểu tượng trên nền tròn xanh ngọc, tài liệu và lông vũ nổi khối.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+    <style>
+      :root {
+        --ink: #0f172a;
+        --paper: #ffffff
+      }
+
+      @media (prefers-color-scheme:dark) {
+        :root {
+          --ink: #e5e7eb;
+          --paper: #0b1220
+        }
+      }
+    </style>
+    <filter id="s" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".2" />
+    </filter>
+  </defs>
+
+  <!-- Badge -->
+  <circle cx="256" cy="256" r="220" fill="url(#g)" />
+
+  <!-- Icon group -->
+  <g filter="url(#s)">
+    <!-- Doc -->
+    <rect x="112" y="128" width="232" height="256" rx="28" fill="var(--paper)" />
+    <g stroke="var(--ink)" stroke-linecap="round" stroke-width="16">
+      <line x1="152" y1="196" x2="296" y2="196" />
+      <line x1="152" y1="240" x2="296" y2="240" />
+      <line x1="152" y1="284" x2="236" y2="284" />
+    </g>
+
+    <!-- Feather solid -->
+    <g transform="translate(210,110) rotate(20)">
+      <path d="M180,0 C114,34 60,96 32,154 c-12,24 -20,49 -26,76
+               c30,-6 56,-15 78,-26 C146,180 210,122 252,52
+               c-16,2 -38,-8 -50,-22 C192,20 186,8 180,0 Z" fill="var(--ink)" />
+      <path d="M224,60 C176,92 120,144 88,190 c-24,34 -42,68 -56,106" fill="none" stroke="var(--paper)"
+        stroke-width="10" stroke-linecap="round" />
+    </g>
+  </g>
+</svg>

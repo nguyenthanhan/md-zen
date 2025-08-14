@@ -63,22 +63,22 @@ export const colors = {
 
   // Shadow colors (converted from RGBA)
   shadow: {
-    light: "#0000001a", // rgba(0, 0, 0, 0.1)
-    medium: "#00000033", // rgba(0, 0, 0, 0.2)
-    dark: "#00000080", // rgba(0, 0, 0, 0.5)
+    light: "#0000001a",
+    medium: "#00000033",
+    dark: "#00000080",
   },
 
   // Focus ring colors
   focus: {
-    blue: "#3b82f64d", // rgba(59, 130, 246, 0.3)
-    ring: "#3b82f680", // rgba(59, 130, 246, 0.5)
+    blue: "#3b82f64d",
+    ring: "#3b82f680",
   },
 
   // Overlay colors
   overlay: {
-    light: "#80808033", // rgba(128, 128, 128, 0.2)
-    medium: "#8080804d", // rgba(128, 128, 128, 0.3)
-    dark: "#80808080", // rgba(128, 128, 128, 0.5)
+    light: "#80808033",
+    medium: "#8080804d",
+    dark: "#80808080",
   },
 };
 
