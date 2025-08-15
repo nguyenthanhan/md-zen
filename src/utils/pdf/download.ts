@@ -83,6 +83,8 @@ export function downloadAsPDF(
       const onMessage = (event: MessageEvent) => {
         // Only accept messages from the PDF window we opened
         if (event.source !== pdfWindow) return;
+        // Ensure message is from our own origin
+        if (event.origin !== window.location.origin) return;
 
         const data = (event && event.data) || {};
         if (!data) return;
