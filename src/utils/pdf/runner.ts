@@ -53,16 +53,42 @@ const defaultOptions = {
 } as const;
 
 // Signal readiness to the opener as soon as the runner is loaded
-try {
-  // Post soon after the event loop to ensure window.opener is set
-  setTimeout(() => postToOpener({ type: "mdzen-pdf-ready" }), 0);
-} catch {
-  // ignore
-}
+const signalReadiness = async () => {
+  const maxAttempts = 5;
+  const retryInterval = 50;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    if (window.opener) {
+      try {
+        postToOpener({ type: "mdzen-pdf-ready" });
+        return;
+      } catch {
+        // ignore
+      }
+    }
+
+    if (attempt < maxAttempts) {
+      await delay(retryInterval);
+    }
+  }
+
+  // Log warning if window.opener never becomes available
+  console.warn(
+    "MDZen PDF: window.opener not available after",
+    maxAttempts,
+    "attempts"
+  );
+};
+
+// Start the retry loop immediately
+signalReadiness().catch(() => {
+  // ignore any errors in the retry loop
+});
 
 // Listen for messages from the opener
 window.addEventListener("message", async (event: MessageEvent) => {
-  const data = (event && (event.data as PdfGenerateMessage)) || ({} as PdfGenerateMessage);
+  const data =
+    (event && (event.data as PdfGenerateMessage)) || ({} as PdfGenerateMessage);
   if (!data || data.type !== "mdzen-generate-pdf") return;
 
   const { html, filename, options } = data;
@@ -86,7 +112,10 @@ window.addEventListener("message", async (event: MessageEvent) => {
     const { default: html2pdf } = (await import("html2pdf.js")) as unknown as {
       default: Html2PdfFn;
     };
-    await html2pdf().set(merged).from(document.body as HTMLElement).save();
+    await html2pdf()
+      .set(merged)
+      .from(document.body as HTMLElement)
+      .save();
 
     // Notify opener of success
     postToOpener({ type: "mdzen-pdf-done", success: true });
@@ -97,7 +126,11 @@ window.addEventListener("message", async (event: MessageEvent) => {
     } catch {
       // ignore print errors
     }
-    postToOpener({ type: "mdzen-pdf-done", success: false, error: String(err) });
+    postToOpener({
+      type: "mdzen-pdf-done",
+      success: false,
+      error: String(err),
+    });
   } finally {
     // Close this window shortly after
     setTimeout(safeClose, 300);

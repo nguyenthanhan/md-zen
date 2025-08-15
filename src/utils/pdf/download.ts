@@ -58,7 +58,7 @@ export function downloadAsPDF(
 
       // Bootstrap the runner in the new window by injecting minimal HTML that imports the runner module
       try {
-        const bootstrapHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>MDZen PDF</title></head><body><script type="module">import '/src/pdf/runner.ts';</script></body></html>`;
+        const bootstrapHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><title>MDZen PDF</title></head><body><script type="module">import '/src/utils/pdf/runner.ts';</script></body></html>`;
         pdfWindow.document.open();
         pdfWindow.document.write(bootstrapHtml);
         pdfWindow.document.close();
@@ -88,6 +88,9 @@ export function downloadAsPDF(
       // Listen for completion and ready messages
       let runnerReady = false;
       const onMessage = (event: MessageEvent) => {
+        // Only accept messages from the PDF window we opened
+        if (event.source !== pdfWindow) return;
+
         const data = (event && event.data) || {};
         if (!data) return;
         if (data.type === "mdzen-pdf-ready") {
@@ -146,7 +149,7 @@ export function downloadAsPDF(
               filename,
               options,
             },
-            "*"
+            window.location.origin
           );
         } catch (err) {
           console.error("Failed to post PDF payload:", err);

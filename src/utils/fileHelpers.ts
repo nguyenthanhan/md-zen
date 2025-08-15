@@ -13,7 +13,7 @@ export function downloadFile(
 }
 
 // Wrap plain body HTML into a complete HTML document for downloads
-export function buildHtmlDocument(body: string): string {
+export function buildBaseHtmlDocument(body: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,8 +35,11 @@ export function buildHtmlDocument(body: string): string {
 
 // Download HTML by accepting either a full document or body HTML
 export function downloadHtml(filename: string, bodyOrFullHtml: string) {
-  const looksLikeDoc = /^\s*<!DOCTYPE/i.test(bodyOrFullHtml) || /<html[\s>]/i.test(bodyOrFullHtml);
-  const html = looksLikeDoc ? bodyOrFullHtml : buildHtmlDocument(bodyOrFullHtml);
+  const looksLikeDoc =
+    /^\s*<!DOCTYPE/i.test(bodyOrFullHtml) || /<html[\s>]/i.test(bodyOrFullHtml);
+  const html = looksLikeDoc
+    ? bodyOrFullHtml
+    : buildBaseHtmlDocument(bodyOrFullHtml);
   // Use a standard HTML content type with UTF-8 charset
   downloadFile(filename, html, "text/html;charset=utf-8");
 }

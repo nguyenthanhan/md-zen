@@ -102,7 +102,7 @@ def hello():
   const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const editorRef = useRef<EditorRef>(null);
+  const editorRef = useRef<EditorRef | null>(null);
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
