@@ -13,7 +13,7 @@ interface EditorProps {
   isDarkMode: boolean;
 }
 
-interface EditorRef {
+export interface EditorRef {
   insertText: (text: string) => void;
   undo: () => void;
   redo: () => void;

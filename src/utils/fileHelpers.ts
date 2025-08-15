@@ -1,5 +1,3 @@
-// html2pdf is now loaded dynamically in the new window
-
 export function downloadFile(
   filename: string,
   content: string,
@@ -14,141 +12,45 @@ export function downloadFile(
   URL.revokeObjectURL(url);
 }
 
-export function downloadAsPDF(
-  htmlContent: string,
-  filename: string = "document.pdf"
-): Promise<boolean> {
-  return new Promise((resolve) => {
-    try {
-      // Use a completely isolated approach - create a new window
-      const printWindow = window.open(
-        "",
-        "_blank",
-        "width=800,height=600,scrollbars=yes,resizable=yes"
-      );
+// Wrap plain body HTML into a complete HTML document for downloads
+export function buildBaseHtmlDocument(
+  body: string,
+  options: {
+    title?: string;
+    styles?: string;
+  } = {}
+): string {
+  const { title = "MDZen - Minimal Markdown Editor", styles = "" } = options;
 
-      if (!printWindow) {
-        console.error("Could not open print window");
-        resolve(false);
-        return;
-      }
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
+    code { background: #f4f4f4; padding: 0.2rem 0.4rem; border-radius: 3px; }
+    pre { background: #f4f4f4; padding: 1rem; border-radius: 5px; overflow-x: auto; }
+    blockquote { border-left: 4px solid #ddd; margin: 0; padding-left: 1rem; color: #666; }
+    ${styles}
+  </style>
+  </head>
+  <body>
+    ${body}
+  </body>
+  </html>`;
+}
 
-      // Write content to the new window
-      printWindow.document.write(htmlContent);
-      printWindow.document.close();
-
-      // Wait for content to load, then trigger PDF download
-      printWindow.onload = () => {
-        try {
-          // Use html2pdf on the new window's document
-          const options = {
-            margin: [0.5, 0.5, 0.5, 0.5], // top, right, bottom, left margins
-            filename: filename,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: {
-              scale: 2,
-              useCORS: true,
-              allowTaint: true,
-              backgroundColor: "#ffffff",
-            },
-            jsPDF: {
-              unit: "in",
-              format: "a4",
-              orientation: "portrait",
-              putOnlyUsedFonts: true,
-              floatPrecision: 16,
-            },
-            pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-            // Remove header and footer
-            header: null,
-            footer: null,
-          };
-
-          // Import html2pdf in the new window context
-          const script = printWindow.document.createElement("script");
-          script.src =
-            "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
-          script.onload = () => {
-            try {
-              // Use html2pdf from the new window
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const html2pdfFn = (printWindow as any).html2pdf;
-              if (html2pdfFn) {
-                html2pdfFn()
-                  .set(options)
-                  .from(printWindow.document.body)
-                  .save()
-                  .then(() => {
-                    console.log("PDF generated successfully");
-                    printWindow.close();
-                    resolve(true);
-                  })
-                  .catch((error: unknown) => {
-                    console.error(
-                      "PDF generation failed, falling back to print:",
-                      error
-                    );
-                    // Fallback to print
-                    printWindow.print();
-                    setTimeout(() => {
-                      printWindow.close();
-                      resolve(true);
-                    }, 1000);
-                  });
-              } else {
-                // html2pdf not available, use print
-                printWindow.print();
-                setTimeout(() => {
-                  printWindow.close();
-                  resolve(true);
-                }, 1000);
-              }
-            } catch (error) {
-              console.error(
-                "PDF generation error, using print fallback:",
-                error
-              );
-              printWindow.print();
-              setTimeout(() => {
-                printWindow.close();
-                resolve(true);
-              }, 1000);
-            }
-          };
-          script.onerror = () => {
-            console.log("html2pdf not available, using print fallback");
-            printWindow.print();
-            setTimeout(() => {
-              printWindow.close();
-              resolve(true);
-            }, 1000);
-          };
-          printWindow.document.head.appendChild(script);
-        } catch (error) {
-          console.error("Error in print window:", error);
-          printWindow.print();
-          setTimeout(() => {
-            printWindow.close();
-            resolve(true);
-          }, 1000);
-        }
-      };
-
-      // Fallback if onload doesn't fire
-      setTimeout(() => {
-        if (printWindow.document.readyState === "complete") {
-          printWindow.print();
-          setTimeout(() => {
-            printWindow.close();
-            resolve(true);
-          }, 1000);
-        }
-      }, 2000);
-    } catch (error) {
-      console.error("PDF generation error:", error);
-      resolve(false);
-    }
-  });
+// Download HTML by accepting either a full document or body HTML
+export function downloadHtml(filename: string, bodyOrFullHtml: string) {
+  const looksLikeDoc =
+    /^\s*<!DOCTYPE/i.test(bodyOrFullHtml) || /<html[\s>]/i.test(bodyOrFullHtml);
+  const html = looksLikeDoc
+    ? bodyOrFullHtml
+    : buildBaseHtmlDocument(bodyOrFullHtml);
+  // Use a standard HTML content type with UTF-8 charset
+  downloadFile(filename, html, "text/html;charset=utf-8");
 }
 
 export async function copyToClipboard(text: string): Promise<boolean> {
