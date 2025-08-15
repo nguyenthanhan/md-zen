@@ -164,12 +164,10 @@ def hello():
       setIsGeneratingPDF(true);
       console.log("Generating PDF...");
 
-      const htmlContent = await parseMarkdown(content);
-
       const baseFilename = getBaseFilename(filename);
       const pdfFilename = baseFilename + FILE_CONFIG.extensions.pdf;
 
-      const success = await downloadAsPDF(htmlContent, pdfFilename);
+      const success = await downloadAsPDF(parseMarkdown(content), pdfFilename);
 
       if (success) {
         console.log("✅ PDF generated successfully!");

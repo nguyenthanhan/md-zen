@@ -13,18 +13,27 @@ export function downloadFile(
 }
 
 // Wrap plain body HTML into a complete HTML document for downloads
-export function buildBaseHtmlDocument(body: string): string {
+export function buildBaseHtmlDocument(
+  body: string,
+  options: {
+    title?: string;
+    styles?: string;
+  } = {}
+): string {
+  const { title = "MDZen - Minimal Markdown Editor", styles = "" } = options;
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MDZen - Minimal Markdown Editor</title>
+  <title>${title}</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
     code { background: #f4f4f4; padding: 0.2rem 0.4rem; border-radius: 3px; }
     pre { background: #f4f4f4; padding: 1rem; border-radius: 5px; overflow-x: auto; }
     blockquote { border-left: 4px solid #ddd; margin: 0; padding-left: 1rem; color: #666; }
+    ${styles}
   </style>
   </head>
   <body>
