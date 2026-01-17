@@ -5,6 +5,6 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "git": {
-    "deploymentEnabled": false
+    "deploymentEnabled": true
   }
 }
