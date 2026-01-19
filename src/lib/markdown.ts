@@ -43,7 +43,7 @@ const sanitizeConfig = {
   ],
   ALLOWED_ATTR: ["href", "src", "alt", "title", "class", "id"],
   ALLOWED_URI_REGEXP:
-    /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+    /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|data):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i,
   FORBID_TAGS: [
     "script",
     "object",
