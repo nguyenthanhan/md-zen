@@ -1,6 +1,14 @@
 @import "./styles/variables.css";
 @import "tailwindcss";
 
+:root {
+  --editor-bg: #f9fafb;
+}
+
+.dark {
+  --editor-bg: #0f172a;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

@@ -1,0 +1,97 @@
+/* Header specific styles */
+.header-root {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+.dark .header-root {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+/* Ensure all text elements have proper contrast */
+.header-root input,
+.header-root span,
+.header-root button {
+  color: inherit;
+}
+
+.header-root input {
+  color: #111827;
+}
+
+.dark .header-root input {
+  color: #f9fafb;
+}
+
+.header-root .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.dark .header-root .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+.header-root .text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.dark .header-root .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+.header-root .text-gray-900 {
+  color: #111827 !important;
+}
+
+.dark .header-root .text-gray-900 {
+  color: #f9fafb !important;
+}
+
+/* Button and icon colors */
+.header-root button,
+.header-root a {
+  color: #4b5563;
+}
+
+.dark .header-root button,
+.dark .header-root a {
+  color: #9ca3af;
+}
+
+.header-root button:hover,
+.header-root a:hover {
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
+.dark .header-root button:hover,
+.dark .header-root a:hover {
+  color: #f9fafb;
+  background-color: #374151;
+}
+
+/* Override any dark classes that shouldn't apply in light mode */
+.header-root .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.dark .header-root .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.header-root .dark\:text-gray-400 {
+  color: #4b5563 !important;
+}
+
+.dark .header-root .dark\:text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.header-root .dark\:text-gray-100 {
+  color: #111827 !important;
+}
+
+.dark .header-root .dark\:text-gray-100 {
+  color: #f9fafb !important;
+}

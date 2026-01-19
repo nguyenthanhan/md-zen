@@ -94,7 +94,19 @@ def hello():
 
 **Happy writing!** 🚀`
   );
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check if dark mode was previously enabled
+    const savedDarkMode = localStorage.getItem(STORAGE_KEYS.isDarkMode);
+    const prefersDark = savedDarkMode === 'true' || 
+      (!savedDarkMode && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    // Apply dark class immediately on load
+    if (prefersDark) {
+      document.documentElement.classList.add('dark');
+    }
+    
+    return prefersDark;
+  });
   const [fontSize, setFontSize] = useState<number>(
     EDITOR_CONFIG.fontSize.default
   );
@@ -112,8 +124,18 @@ def hello():
   };
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    
+    // Toggle dark class on html element
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    // Save preference
+    localStorage.setItem(STORAGE_KEYS.isDarkMode, String(newDarkMode));
   };
 
   const handleFilenameChange = (newFilename: string) => {
@@ -195,7 +217,7 @@ def hello():
   const charCount = content.length;
 
   return (
-    <div className={`h-screen flex flex-col ${isDarkMode ? "dark" : ""}`}>
+    <div className="h-screen flex flex-col">
       <Header
         filename={filename}
         onFilenameChange={handleFilenameChange}

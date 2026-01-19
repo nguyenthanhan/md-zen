@@ -3,6 +3,7 @@ import DownloadDropdown from "./DownloadDropdown";
 import SettingsDropdown from "./SettingsDropdown";
 import { getBaseFilename } from "@utils/common";
 import { APP_CONFIG } from "@utils/constants";
+import "./header.css";
 
 interface HeaderProps {
   filename: string;
@@ -56,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const baseFilename = getBaseFilename(filename);
   return (
-    <div className="relative flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-600">
+    <div className="header-root relative flex items-center justify-between px-4 py-3 border-b border-gray-300 dark:border-gray-600">
       <div className="flex items-center space-x-4 flex-1 min-w-0">
         {/* Filename input with fixed .md extension */}
         <div className="relative flex items-center w-32 sm:w-48 md:w-64">

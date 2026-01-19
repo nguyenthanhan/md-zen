@@ -12,13 +12,14 @@ import {
   highlightActiveLineGutter,
 } from "@codemirror/view";
 import {
-  defaultHighlightStyle,
   syntaxHighlighting,
   indentOnInput,
   bracketMatching,
   foldGutter,
   foldKeymap,
+  HighlightStyle,
 } from "@codemirror/language";
+import { tags } from "@lezer/highlight";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
 import {
@@ -29,7 +30,6 @@ import {
 } from "@codemirror/autocomplete";
 import { lintKeymap } from "@codemirror/lint";
 import { markdown } from "@codemirror/lang-markdown";
-import { oneDark } from "@codemirror/theme-one-dark";
 import { validateMarkdownLength } from "@lib/markdown";
 import { colors } from "./colors";
 
@@ -53,7 +53,7 @@ export const createEditorExtensions = (
     dropCursor(),
     EditorState.allowMultipleSelections.of(true),
     indentOnInput(),
-    syntaxHighlighting(defaultHighlightStyle),
+    syntaxHighlighting(createHighlightStyle(isDarkMode)),
     bracketMatching(),
     closeBrackets(),
     autocompletion(),
@@ -98,31 +98,57 @@ export const createEditorExtensions = (
     }),
 
     // Theme
-    createEditorTheme(fontSize),
+    createEditorTheme(fontSize, isDarkMode),
   ];
-
-  // Add dark theme if needed
-  if (isDarkMode) {
-    extensions.push(oneDark);
-  }
 
   return extensions;
 };
 
 /**
+ * Create syntax highlighting style
+ */
+export const createHighlightStyle = (isDarkMode: boolean) => {
+  return HighlightStyle.define([
+    { tag: tags.heading1, color: isDarkMode ? "#e5e7eb" : "#1f2937", fontWeight: "800", fontSize: "1.5em" },
+    { tag: tags.heading2, color: isDarkMode ? "#e5e7eb" : "#1f2937", fontWeight: "700", fontSize: "1.3em" },
+    { tag: tags.heading3, color: isDarkMode ? "#e5e7eb" : "#374151", fontWeight: "600", fontSize: "1.15em" },
+    { tag: tags.heading, color: isDarkMode ? "#d1d5db" : "#374151", fontWeight: "600" },
+    { tag: tags.strong, color: isDarkMode ? "#fbbf24" : "#92400e", fontWeight: "700" },
+    { tag: tags.emphasis, color: isDarkMode ? "#d1d5db" : "#4b5563", fontStyle: "italic" },
+    { tag: tags.link, color: isDarkMode ? "#93c5fd" : "#3b82f6", textDecoration: "underline" },
+    { tag: tags.url, color: isDarkMode ? "#86efac" : "#16a34a" },
+    { tag: tags.monospace, color: isDarkMode ? "#fca5a1" : "#b91c1c", backgroundColor: isDarkMode ? "#1e293b" : "#f9fafb" },
+    { tag: tags.quote, color: isDarkMode ? "#9ca3af" : "#6b7280", fontStyle: "italic" },
+    { tag: tags.list, color: isDarkMode ? "#d1d5db" : "#4b5563" },
+    { tag: tags.contentSeparator, color: isDarkMode ? "#6b7280" : "#d1d5db" },
+    { tag: tags.strikethrough, color: isDarkMode ? "#9ca3af" : "#9ca3af", textDecoration: "line-through" },
+  ]);
+};
+
+/**
  * Create editor theme
  */
-export const createEditorTheme = (fontSize: number) => {
+export const createEditorTheme = (fontSize: number, isDarkMode: boolean = false) => {
   return EditorView.theme({
     "&": {
       fontSize: `${fontSize}px`,
       height: "100%",
+      backgroundColor: isDarkMode ? "#0f172a" : "#f9fafb",
+    },
+    ".cm-gutters": {
+      backgroundColor: isDarkMode ? "#0f172a" : "#f3f4f6",
+      color: isDarkMode ? "#9ca3af" : "#6b7280",
+      border: "none",
     },
     ".cm-content": {
       padding: "1rem",
       fontFamily:
         "ui-monospace, SFMono-Regular, 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
       lineHeight: "1.5",
+      color: isDarkMode ? "#e5e7eb" : "#1f2937",
+    },
+    ".cm-line": {
+      color: isDarkMode ? "#e5e7eb" : "#1f2937",
     },
     ".cm-content[contenteditable]": {
       "-webkit-user-select": "text",

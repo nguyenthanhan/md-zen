@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { parseMarkdown } from "@lib/markdown";
 import { ScrollSyncManager } from "@utils/scrollSync";
 import { EDITOR_CONFIG } from "@utils/constants";
+import "./preview.css";
 
 interface PreviewProps {
   content: string;
@@ -74,7 +75,7 @@ const Preview: React.FC<PreviewProps> = ({ content }) => {
         onScroll={handleScroll}
       >
         <div
-          className="prose prose-sm max-w-none p-4 text-gray-900 dark:text-gray-100 dark:prose-invert"
+          className="prose p-4"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </div>

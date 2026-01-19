@@ -12,7 +12,7 @@ interface LazyEditorProps {
 }
 
 const EditorSkeleton = () => (
-  <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+  <div className="flex-1 flex items-center justify-center" style={{ backgroundColor: 'var(--editor-bg, #f9fafb)' }}>
     <div className="text-center">
       <div className="animate-pulse">
         <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4"></div>
