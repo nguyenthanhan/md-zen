@@ -14,7 +14,7 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         manualChunks: (id) => {
           // Split vendor libraries
@@ -49,11 +49,13 @@ export default defineConfig({
             return "utils";
           }
         },
+        minify: {
+          compress: {
+            dropConsole: true,
+          },
+        },
       },
     },
     chunkSizeWarningLimit: 1000,
-  },
-  esbuild: {
-    drop: ["console"],
   },
 });
